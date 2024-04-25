@@ -2,7 +2,7 @@ package com.technews.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-
+import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
@@ -12,7 +12,7 @@ import java.util.Objects;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 //Name the table
 @Table(name = "user")
-public class User {
+public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
@@ -37,6 +37,9 @@ public class User {
 //    FetchType.LAZY to resolve multiple bags
     @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Comment> comments;
+
+    public User() {
+    }
 
     public User(Integer id, String username, String email, String password) {
         this.id = id;
