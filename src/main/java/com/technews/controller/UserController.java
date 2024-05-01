@@ -50,10 +50,13 @@ public class UserController {
         return user;
     }
 
+//    update user by id
     @PutMapping("/api/users/{id}")
+//    id is extracted from url path; user is second arg, which is deserialized from req body JSON into a User obj
     public User updateUser(@PathVariable int id, @RequestBody User user) {
+//        retrieves user by id from repository.
         User tempUser = repository.getById(id);
-
+//            if user exists, sets id of user object to ID of tempUser object; ensures updated user object has correct ID before saving to repository.
         if(!tempUser.equals(null)) {
             user.setId(tempUser.getId());
             repository.save(user);
@@ -62,6 +65,7 @@ public class UserController {
     }
 
     @DeleteMapping("/api/users/{id}")
+//    Annotation sets http res status code to 204 - no content if user is successfully deleted
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteUser(@PathVariable int id) {
         repository.deleteById(id);
