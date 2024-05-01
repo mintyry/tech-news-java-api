@@ -45,7 +45,7 @@ public class UserController {
     @PostMapping("/api/users")
     public User addUser(@RequestBody User user) {
 //        Encrypt password
-        user.setPassword(Bcrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
+        user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
         repository.save(user);
         return user;
     }
