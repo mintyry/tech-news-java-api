@@ -21,6 +21,7 @@ public class UserController {
 
     @GetMapping("/api/users")
     public List<User> getAllUsers() {
+//        set return type to List<User>
         List<User> userList = repository.findAll();
         for (User u : userList) {
             List<Post> postList = u.getPosts();
