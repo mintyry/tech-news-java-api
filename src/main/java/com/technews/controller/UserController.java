@@ -6,6 +6,7 @@ import com.technews.repository.UserRepository;
 import com.technews.repository.VoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -28,6 +29,16 @@ public class UserController {
             }
         }
         return userList;
+    }
+
+    @GetMapping("/api/users/{id}")
+    public User getUserById(@PathVariable Integer id) {
+        User returnUser = repository.getById(id);
+        List<Post> postList = returnUser.getPosts();
+        for (Post p : postList) {
+            p.setVoteCount(voteRepository.countVotesByPostId(p.getId()));
+        }
+        return returnUser;
     }
 }
 
