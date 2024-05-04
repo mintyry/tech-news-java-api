@@ -74,4 +74,14 @@ public class PostController {
 //        save updated post to db
         return repository.save(tempPost);
     }
+
+//    delete post
+    @DeleteMapping("/api/posts/{id}")
+//    successful response status, but no content to return
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+//    public method  post (return value wont be used), takes id as parameter
+    public void deletePost(@PathVariable int id){
+//        deletes post by id in db
+        repository.deleteById(id);
+    }
 }
