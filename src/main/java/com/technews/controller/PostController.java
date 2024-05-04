@@ -22,10 +22,19 @@ public class PostController {
     UserRepository userRepository;
 
 //    get posts
+//    defines method that handles GET requests; when GET request is made, getAllPosts(); is called
     @GetMapping("/api/posts")
+//    method definition for handling GET req. Returns list of Post objects.
+//    public means the method can be access from anywhere in app
+//    List<Post> is a return type of the method; indicates method will return a list of objects of type Post. List is an interface in Java (represents an ordered collection of elements)
+//    summary: the method is public and returns a list of Post objects
     public List<Post> getAllPosts(){
+//        gets all the posts from db with findAll() provided by PostRepository (extends JpaRepo); postList will contain all posts retrieved from db.
         List<Post> postList = repository.findAll();
+//        loop iterates over each post in postList
         for (Post p : postList) {
+//            for each post (p), this line sets voteCount by counting the number of votes for that post using countVotesByPostId provided by voteRepo.
+//            setVoteCount is a method from post model
             p.setVoteCount(voteRepository.countVotesByPostId(p.getId()));
         }
         return postList;
