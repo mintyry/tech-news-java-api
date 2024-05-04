@@ -54,8 +54,11 @@ public class PostController {
 
 //    Create post
     @PostMapping("/api/posts")
+//    annotation is used to specify the HTTP status code to be returned tot he client after req is made (basically saying it was successfully created)
     @ResponseStatus(HttpStatus.CREATED)
+//    public method return single post; parameter takes in post variable (object) of type Post from the req body
     public Post addPost(@RequestBody Post post) {
+//        saves post object to db
         repository.save(post);
         return post;
     }
