@@ -42,8 +42,11 @@ public class PostController {
 
 //    get single post
     @GetMapping("/api/posts/{id}")
+//    public method that returns a single object of type Post. It takes id parameter
     public Post getPost(@PathVariable Integer id) {
+//        gets post via id in db and applies it to returnPost variable
         Post returnPost = repository.getById(id);
+//        sets vote count by id extended by class/repo
         returnPost.setVoteCount(voteRepository.countVotesByPostId(returnPost.getId()));
 
         return returnPost;
