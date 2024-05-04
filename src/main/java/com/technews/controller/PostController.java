@@ -62,4 +62,16 @@ public class PostController {
         repository.save(post);
         return post;
     }
+
+//    update post
+    @PutMapping("/api/posts/{id}")
+//    public method returns single post; takes two parameters: id (which post to update) and post sent in the req body
+    public Post updatePost(@PathVariable int id, @RequestBody Post post){
+//        access post in db
+        Post tempPost = repository.getById(id);
+//        use class method to update post's title
+        tempPost.setTitle(post.getTitle());
+//        save updated post to db
+        return repository.save(tempPost);
+    }
 }
