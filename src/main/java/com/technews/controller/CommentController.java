@@ -3,9 +3,8 @@ package com.technews.controller;
 import com.technews.model.Comment;
 import com.technews.repository.CommentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -29,4 +28,16 @@ public class CommentController {
 //        returns the comment by id
         return repository.getById(id);
     }
+
+//    create route
+    @PostMapping("/api/comments")
+//    provides res status saying content was created
+    @ResponseStatus(HttpStatus.CREATED)
+//    public method return single comment, takes comment object from req body
+    public Comment createComment(@RequestBody Comment comment){
+//        saves comment to db
+        return repository.save(comment);
+    }
+
+    
 }
