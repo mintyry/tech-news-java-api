@@ -78,21 +78,34 @@ public class PostController {
         return repository.save(tempPost);
     }
 
+//    update vote
     @PutMapping("/api/posts/upvote")
+//    public method returns string, takes vote object in req body as parameter
+//    HttpServletRequest is a a special object that represents request from browser to server with various details about the req (ie: what kind of req (get, post, etc), url, parameters like form data, headers sent, etc.)
+//    we use httpservleterquest here bc we need to access session info
     public String addVote(@RequestBody Vote vote, HttpServletRequest request) {
+//        making empty variable of string data type
         String returnValue = "";
+//getting session object; we pass in false to tell servlet that if no session exists, do NOT make a new one. Return null. If it does not return null, then follow the logic. If session does exist, follow the logic.
         if(request.getSession(false) != null){
+//            making variable for a post object; value is null. Gonna use this to store Post object later.
             Post returnPost = null;
-
+//retrieves User object stored in the session under attribute name "SESSION_USER"
+//            (User) is a type cast; tells Java to treat the result of the following line as a User object. It's necessary because getAttribute returns an Object and we want that Object to be treated as User.
+//            This is an example cast method chaining (result of method gets cast to User object).
             User sessionUser = (User) request.getSession().getAttribute("SESSION_USER");
+//            sets user id of the vote object to the ID of the user retrieved from session.
             vote.setUserId(sessionUser.getId());
+//            save to db
             voteRepository.save(vote);
-
+//retrieve post by id (which will be the vote object's post id)
             returnPost = repository.getById(vote.getPostId());
+//            update vote count
             returnPost.setVoteCount(voteRepository.countVotesByPostId(vote.getPostId()));
 
             returnValue = "";
         } else {
+//            if no session exists, run this.
             returnValue = "login";
         }
 
