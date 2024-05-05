@@ -39,5 +39,17 @@ public class CommentController {
         return repository.save(comment);
     }
 
-    
+//    put route
+    @PutMapping("/api/updateComment")
+//    returns single comment via comment object in req body
+    public Comment updateComment(@RequestBody Comment comment){
+//        saves to db
+        return repository.save(comment);
+    }
+
+    @DeleteMapping("/api/comments/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteComment(@PathVariable int id) {
+        repository.deleteById(id);
+    }
 }
