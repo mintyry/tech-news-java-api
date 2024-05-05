@@ -42,6 +42,7 @@ public class CommentController {
 //    put route
     @PutMapping("/api/updateComment")
 //    returns single comment via comment object in req body
+//    perhaps comment id is already in comment object
     public Comment updateComment(@RequestBody Comment comment){
 //        saves to db
         return repository.save(comment);
