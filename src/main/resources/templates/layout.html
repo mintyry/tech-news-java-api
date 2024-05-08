@@ -1,8 +1,11 @@
 <!DOCTYPE html>
+<!--specifies Thymelead namespace definitions, allowing use of Thymeleaf syntax-->
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<!--    makes title dynamic, change with templates we bring in
+pattern will be content title - layout title (tab titles)-->
     <title layout:title-pattern="$CONTENT_TITLE - $LAYOUT_TITLE">Just Tech News</title>
     <link rel="stylesheet" href="/css/style.css">
 </head>
