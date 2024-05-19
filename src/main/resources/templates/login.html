@@ -2,21 +2,25 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout}">
+<!--layout decorate line specifies this page will be bound to layout.html main template page.-->
 <head>
     <title>Login</title>
 </head>
 
 <body>
 
+<!--this line indicates the content we want to place in the content of the div layout page-->
 <div layout:fragment="content">
 
     <div th:if="${notice}" class="flash-message">
         <h3>[[${notice}]]</h3>
     </div>
 
+<!--    thymeleaf attributes: action designates the API route for submitting this form; object user designates the submitted form will comprise a user object; method att designates POST req.-->
     <form action="#" th:action="@{/users/login}" th:object="${user}" method="post" class="login-form">
         <div>
             <label>email:</label>
+<!--            thymwleaf field names the field-->
             <input type="text" th:field="*{email}"/>
         </div>
         <div>
@@ -33,6 +37,7 @@
     <form action="#" th:action="@{/users}" th:object="${user}" method="post" class="signup-form">
         <div>
             <label>username:</label>
+<!--            naming input fields this way binds the input content to object property-->
             <input type="text" th:field="*{username}"/>
         </div>
         <div>
