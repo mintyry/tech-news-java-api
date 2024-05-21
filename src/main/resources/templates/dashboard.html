@@ -8,6 +8,7 @@
 
 <body>
 
+<!--"content" is name of fragment-->
 <div layout:fragment="content">
 
     <div th:if="${notice}" class="flash-message">
@@ -33,8 +34,11 @@
     <section th:if="${postList.size() > 0}">
         <h2>Your Posts</h2>
         <ol>
+<!--            for each element in postList object (post), make an li -->
             <li th:each="post : ${postList}">
+<!--                insert fragment called post-fragment, which is found in fragments/post-fragment-->
                 <div th:insert="fragments/post-fragment :: post-fragment"></div>
+<!--                thymeleaf syntax to generate dynamic URL-->
                 <a th:href="@{/dashboard/edit/{id}(id=${post.id})}" class="edit-link">Edit post</a>
             </li>
         </ol>
