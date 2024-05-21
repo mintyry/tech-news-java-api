@@ -46,6 +46,7 @@
     <form action="#" th:action="@{/comments/edit}" th:object="${comment}" method="post" class="comment-form">
         <div>
             <input type="hidden" th:value="${post.id}" name="postId"/>
+<!--            *{commentText} : * binds to commentText part of object-->
             <textarea name="comment-body" th:field="*{commentText}"></textarea>
         </div>
 
