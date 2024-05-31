@@ -1,6 +1,7 @@
 package com.technews.controller;
 
 import com.technews.model.Post;
+import com.technews.model.Comment;
 import com.technews.repository.CommentRepository;
 import com.technews.repository.PostRepository;
 import com.technews.repository.UserRepository;
@@ -179,22 +180,26 @@ public class HomePageController {
         return model;
     }
 
-
+//all methods associated with single post are called by setupSinglePostPage
     public Model setupSinglePostPage(int id, Model model, HttpServletRequest request) {
         if (request.getSession(false) != null) {
+//            store user session
             User sessionUser = (User) request.getSession().getAttribute("SESSION_USER");
             model.addAttribute("sessionUser", sessionUser);
             model.addAttribute("loggedIn", sessionUser.isLoggedIn());
         }
-
+//get post by id, store in post var
         Post post = postRepository.getById(id);
+//        count votes, which are accessed by id
         post.setVoteCount(voteRepository.countVotesByPostId(post.getId()));
-
+// set username
         User postUser = userRepository.getById(post.getUserId());
         post.setUserName(postUser.getUsername());
 
+//find and display all comments via their post id
         List<Comment> commentList = commentRepository.findAllCommentsByPostId(post.getId());
 
+//        return data to single page template
         model.addAttribute("post", post);
 
         model.addAttribute("commentList", commentList);
