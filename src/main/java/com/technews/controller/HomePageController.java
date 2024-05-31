@@ -106,15 +106,14 @@ public class HomePageController {
             return "login";
         }
     }
-
-    @GetMapping("/dashboardEmptyTitleAndLink")
+//if user forgets title and link, handle it   @GetMapping("/dashboardEmptyTitleAndLink")
     public String dashboardEmptyTitleAndLinkHandler(Model model, HttpServletRequest request) throws Exception {
         setupDashboardPage(model, request);
         model.addAttribute("notice", "To create a post the Title and Link must be populated!");
         return "dashboard";
     }
 
-
+//error handling
     @GetMapping("/singlePostEmptyComment/{id}")
     public String singlePostEmptyCommentHandler(@PathVariable int id, Model model, HttpServletRequest request) {
         setupSinglePostPage(id, model, request);
