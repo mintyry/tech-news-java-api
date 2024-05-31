@@ -32,6 +32,7 @@ public class HomePageController {
 
     @Autowired
     CommentRepository commentRepository;
+
     @GetMapping("/login")
 //    Model is from Spring framework; remapped this to "model" variable
     public String login(Model model, HttpServletRequest request) {
@@ -43,5 +44,14 @@ public class HomePageController {
 //        in this case, we send newly created user to the template as string user so it can be displayed in the template. Once logged in, user is redirected to / route (homepage)
         model.addAttribute("user", new User());
         return "login";
+    }
+
+    @GetMapping("/users/logout")
+//    this route checks if session exists; if yes, invalidate session and log user out and redirect to login route
+    public String logout(HttpServletRequest request) {
+        if (request.getSession(false) != null) {
+            request.getSession().invalidate();
+        }
+        return "redirect:/login";
     }
 }
