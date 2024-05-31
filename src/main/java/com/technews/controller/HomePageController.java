@@ -208,18 +208,21 @@ public class HomePageController {
         return model;
     }
 
-
+//setupEditPostPage calls all methods for editpostpage
     public Model setupEditPostPage(int id, Model model, HttpServletRequest request) {
         if (request.getSession(false) != null) {
+//            store user session in var
             User sessionUser = (User) request.getSession().getAttribute("SESSION_USER");
-
+//retrieves data by id
             Post returnPost = postRepository.getById(id);
             User tempUser = userRepository.getById(returnPost.getUserId());
+//            display username and vote count
             returnPost.setUserName(tempUser.getUsername());
             returnPost.setVoteCount(voteRepository.countVotesByPostId(returnPost.getId()));
-
+//retrieves corresponding comments
             List<Comment> commentList = commentRepository.findAllCommentsByPostId(returnPost.getId());
 
+//            returns data to editpostpage
             model.addAttribute("post", returnPost);
             model.addAttribute("loggedIn", sessionUser.isLoggedIn());
             model.addAttribute("commentList", commentList);
