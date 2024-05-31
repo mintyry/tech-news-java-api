@@ -154,19 +154,23 @@ public class HomePageController {
     }
 
 
-
+//all methods associated with dashboard page is called by setupDashboardPage
     public Model setupDashboardPage(Model model, HttpServletRequest request) throws Exception {
+//        value of current user is retrieved via SESSION_USER and stored in sessionUser variable.
         User sessionUser = (User) request.getSession().getAttribute("SESSION_USER");
 
+//        store user id in variable
         Integer userId = sessionUser.getId();
 
         List<Post> postList = postRepository.findAllPostsByUserId(userId);
+//        loop to gather all posts, which are found by userId
         for (Post p : postList) {
             p.setVoteCount(voteRepository.countVotesByPostId(p.getId()));
             User user = userRepository.getById(p.getUserId());
             p.setUserName(user.getUsername());
         }
-
+//pass data into model via attributes and return/make available to thymeleaf pages
+//        current user (sessionUser) is passed to thymelead dashboard template in a variable called user.
         model.addAttribute("user", sessionUser);
         model.addAttribute("postList", postList);
         model.addAttribute("loggedIn", sessionUser.isLoggedIn());
