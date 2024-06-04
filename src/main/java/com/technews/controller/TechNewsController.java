@@ -32,12 +32,14 @@ public class TechNewsController {
 
     @PostMapping("/users/login")
     public String login(@ModelAttribute User user, Model model, HttpServletRequest request) throws Exception {
-
+// checks all fields were filled in correctly
+//        strings cannot be compared with == operator; use .equals()
         if ((user.getPassword().equals(null) || user.getPassword().isEmpty()) || (user.getEmail().equals(null) || user.getPassword().isEmpty())) {
             model.addAttribute("notice", "Email address and password must be populated in order to log in!");
             return "login";
         }
 
+//        if user is found by email, make new session variable & eventually set loggedIn to true and return dashboard template, if not found, redirect to login
         User sessionUser = userRepository.findUserByEmail(user.getEmail());
 
         try {
@@ -62,6 +64,7 @@ public class TechNewsController {
         sessionUser.setLoggedIn(true);
         request.getSession().setAttribute("SESSION_USER", sessionUser);
 
+//        return the dashboard template
         return "redirect:/dashboard";
     }
 }
