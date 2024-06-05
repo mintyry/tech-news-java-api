@@ -7,6 +7,7 @@ import com.technews.repository.UserRepository;
 import com.technews.repository.VoteRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -67,4 +68,38 @@ public class TechNewsController {
 //        return the dashboard template
         return "redirect:/dashboard";
     }
+
+    @PostMapping("/users")
+        public String signup(@ModelAttribute User user, Model model, HttpServletRequest request) throws Exception {
+        if ((user.getUsername().equals(null) || user.getUsername().isEmpty()) || (user.getPassword().equals(null) || user.getPassword().isEmpty()) || (user.getEmail().equals(null) || user.getPassword().isEmpty())) {
+            model.addAttribute("notice", "Fill out all fields to sign up!");
+            return "login";
+        }
+
+        try {
+//            encrypt pw
+            user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
+            userRepository.save(user);
+        } catch (DataIntegrityViolationException e) {
+            model.addAttribute("notice", "Email address is not available -- choose a different one");
+            return "login";
+        }
+
+        User sessionUser = userRepository.findUserByEmail(user.getEmail());
+
+        try {
+            if (sessionUser.equals(null)) {
+
+            }
+        } catch (NullPointerException e) {
+            model.addAttribute("notice", "User is not recognized.");
+            return "login";
+        }
+
+        sessionUser.setLoggedIn(true);
+        request.getSession().setAttribute("SESSION_USER", sessionUser);
+
+       return "redirect:/dashboard";
+    }
+
 }
