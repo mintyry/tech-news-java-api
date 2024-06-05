@@ -31,6 +31,7 @@ public class TechNewsController {
     @Autowired
     CommentRepository commentRepository;
 
+// log in
     @PostMapping("/users/login")
     public String login(@ModelAttribute User user, Model model, HttpServletRequest request) throws Exception {
 // checks all fields were filled in correctly
@@ -69,6 +70,8 @@ public class TechNewsController {
         return "redirect:/dashboard";
     }
 
+//    add user
+//    make sure all fields are filled
     @PostMapping("/users")
         public String signup(@ModelAttribute User user, Model model, HttpServletRequest request) throws Exception {
         if ((user.getUsername().equals(null) || user.getUsername().isEmpty()) || (user.getPassword().equals(null) || user.getPassword().isEmpty()) || (user.getEmail().equals(null) || user.getPassword().isEmpty())) {
@@ -77,7 +80,7 @@ public class TechNewsController {
         }
 
         try {
-//            encrypt pw
+//            encrypt pw then save user to db; if successful, redirects to login page where they can enter new credentials
             user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
             userRepository.save(user);
         } catch (DataIntegrityViolationException e) {
@@ -86,7 +89,7 @@ public class TechNewsController {
         }
 
         User sessionUser = userRepository.findUserByEmail(user.getEmail());
-
+//            if fail to add user to db, show error message and have them try to login again
         try {
             if (sessionUser.equals(null)) {
 
