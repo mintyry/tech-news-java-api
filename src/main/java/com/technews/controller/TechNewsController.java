@@ -1,5 +1,6 @@
 package com.technews.controller;
 
+import com.technews.model.Post;
 import com.technews.model.User;
 import com.technews.repository.CommentRepository;
 import com.technews.repository.PostRepository;
@@ -103,6 +104,25 @@ public class TechNewsController {
         request.getSession().setAttribute("SESSION_USER", sessionUser);
 
        return "redirect:/dashboard";
+    }
+
+//    post endpoint
+    @PostMapping("/posts")
+    public String addPostDashboardPage(@ModelAttribute Post post, Model model, HttpServletRequest request) {
+
+        if ((post.getTitle().equals(null) || post.getTitle().isEmpty()) || (post.getPostUrl().equals(null) || post.getPostUrl().isEmpty())) {
+            return "redirect:/dashboardEmptyTitleAndLink";
+        }
+
+        if(request.getSession(false) == null){
+            return "redirect:/login";
+        } else {
+            User sessionUser = (User) request.getSession().getAttribute("SESSION_USER");
+            post.setUserId(sessionUser.getId());
+            postRepository.save(post);
+
+            return "redirect:/dashboard";
+        }
     }
 
 }
