@@ -170,10 +170,11 @@ public class TechNewsController {
 //    edit comment endpoint
     @PostMapping("/comments/edit")
     public String createCommentEditPage(@ModelAttribute Comment comment, HttpServletRequest request) {
-
+//if text is empty, notice to user to fill text and return to edit post template
         if (comment.getCommentText().equals("") || comment.getCommentText().equals(null)) {
             return "redirect:/editPostEmptyComment/" + comment.getPostId();
         } else {
+//            if sesh valid, set comment userId equal to sessionUser's id, then save updated comment and redirect to edit page
             if (request.getSession(false) != null) {
                 User sessionUser = (User) request.getSession().getAttribute("SESSION_USER");
                 comment.setUserId(sessionUser.getId());
@@ -181,6 +182,7 @@ public class TechNewsController {
 
                 return "redirect:/dashboard/edit/" + comment.getPostId();
             } else {
+//                if sesh invalid, login page
                 return "redirect:/login";
             }
         }
