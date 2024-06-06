@@ -167,6 +167,24 @@ public class TechNewsController {
         }
     }
 
-    
+//    edit comment endpoint
+    @PostMapping("/comments/edit")
+    public String createCommentEditPage(@ModelAttribute Comment comment, HttpServletRequest request) {
+
+        if (comment.getCommentText().equals("") || comment.getCommentText().equals(null)) {
+            return "redirect:/editPostEmptyComment/" + comment.getPostId();
+        } else {
+            if (request.getSession(false) != null) {
+                User sessionUser = (User) request.getSession().getAttribute("SESSION_USER");
+                comment.setUserId(sessionUser.getId());
+                commentRepository.save(comment);
+
+                return "redirect:/dashboard/edit/" + comment.getPostId();
+            } else {
+                return "redirect:/login";
+            }
+        }
+    }
+
 
 }
