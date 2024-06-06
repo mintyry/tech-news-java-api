@@ -149,13 +149,16 @@ public class TechNewsController {
 //    comment endpoint - user can comment on own or others' posts
     @PostMapping("/comments")
     public String createCommentCommentsPage(@ModelAttribute Comment comment, Model model, HttpServletRequest request) {
-
+//if comment is blank, redirect to notice and return them to the edit-post template, done by getting post id of the comment
         if (comment.getCommentText().isEmpty() || comment.getCommentText().equals(null)) {
             return "redirect:/singlePostEmptyComment/" + comment.getPostId();
         } else {
+//            if session is invalid, return to login page
+//            if session IS valid, set comment userId to equal to current sessionUser, bc current session's user is the one who made comment
             if (request.getSession(false) != null) {
                 User sessionUser = (User) request.getSession().getAttribute("SESSION_USER");
                 comment.setUserId(sessionUser.getId());
+//                save comment and return to edit post template with new comment created
                 commentRepository.save(comment);
                 return "redirect:/post/" + comment.getPostId();
             } else {
@@ -163,5 +166,7 @@ public class TechNewsController {
             }
         }
     }
+
+    
 
 }
