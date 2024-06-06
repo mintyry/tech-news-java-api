@@ -188,5 +188,7 @@ public class TechNewsController {
         }
     }
 
+//    upvote endpoint
+    
 
 }
