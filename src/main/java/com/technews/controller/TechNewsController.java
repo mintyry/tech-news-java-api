@@ -12,6 +12,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 //import Model class from Spring framework
@@ -125,5 +126,23 @@ public class TechNewsController {
             return "redirect:/dashboard";
         }
     }
+
+//    update endpoint
+    @PostMapping("/posts/{id}")
+    public String updatePostDashboardPage(@PathVariable int id, @ModelAttribute Post post, Model model, HttpServletRequest request) {
+//        invalid sesh redirects to login
+        if (request.getSession(false) == null) {
+            model.addAttribute("user", new User());
+            return "redirect/dashboard";
+        } else {
+//            if it is valid, get specific post by id; take updated title data and save it as new title via setTitle
+            Post tempPost = postRepository.getById(id);
+            tempPost.setTitle(post.getTitle());
+            postRepository.save(tempPost);
+
+            return "redirect:/dashboard";
+        }
+
+    } //ends update block
 
 }
