@@ -106,17 +106,18 @@ public class TechNewsController {
        return "redirect:/dashboard";
     }
 
-//    post endpoint
+//    post endpoint -- add a post from dboard
     @PostMapping("/posts")
     public String addPostDashboardPage(@ModelAttribute Post post, Model model, HttpServletRequest request) {
-
+//if title and link are empty... redirect to notice
         if ((post.getTitle().equals(null) || post.getTitle().isEmpty()) || (post.getPostUrl().equals(null) || post.getPostUrl().isEmpty())) {
             return "redirect:/dashboardEmptyTitleAndLink";
         }
-
+//if sesh aint valid, bring to login
         if(request.getSession(false) == null){
             return "redirect:/login";
         } else {
+//            if sesh is valid, set user id for that post to be id of sessionUser
             User sessionUser = (User) request.getSession().getAttribute("SESSION_USER");
             post.setUserId(sessionUser.getId());
             postRepository.save(post);
